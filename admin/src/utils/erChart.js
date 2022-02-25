@@ -65,8 +65,10 @@ export function drawNodes(data) {
     node.addOutPort('id');
     Object.keys(model.attributes).forEach((attr) => {
       console.log(` - Property:`, attr);
-      node.addInPort(attr);
-      node.addOutPort(attr);
+      ports[attr] = {
+        in: node.addInPort(attr),
+        out: node.addOutPort(attr)
+      };
     });
     node.setPosition(150 * index, 100);
     nodes.push(node);
@@ -76,14 +78,13 @@ export function drawNodes(data) {
   console.log(nodesMap);
 
   data.forEach((model, index) => {
-    const node = nodesMap[model.key].node;
     Object.keys(model.attributes).forEach((attr) => {
       const fieldData = model.attributes[attr];
       const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
       const relationField = fieldData.inversedBy;
       //if relation
       if (relation && nodesMap[relation]) {
-        const inPort = nodesMap[relation].ports[attr];
+        const inPort = (nodesMap[relation].ports[attr] || nodesMap[relation].ports['id']).in;
         const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
         link.addLabel(fieldData.relation);
         links.push(link);
