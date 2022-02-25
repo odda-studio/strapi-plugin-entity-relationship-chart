@@ -73,6 +73,8 @@ export function drawNodes(data) {
     nodesMap[model.key] = { node, ports };
   });
 
+  console.log(nodesMap);
+
   data.forEach((model, index) => {
     const node = nodesMap[model.key].node;
     Object.keys(model.attributes).forEach((attr) => {
