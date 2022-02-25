@@ -60,6 +60,7 @@ export function drawNodes(data) {
   data.forEach((model, index) => {
     const node = new SRD.DefaultNodeModel(model.name, 'rgb(0,126,255)');
     const ports = {};
+    node.addInPort('id');
     Object.keys(model.attributes).forEach((attr) => {
       if (attr === 'createdBy' || attr === 'updatedBy') {
         return;
@@ -74,7 +75,7 @@ export function drawNodes(data) {
         links.push(link);
         //if scalar field
       } else {
-        ports[attr] = node.addOutPort(attr);
+        ports[attr] = node.addOutPort(attr || 'id');
       }
     });
     node.setPosition(150 * index, 100);
