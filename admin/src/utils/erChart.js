@@ -62,29 +62,32 @@ export function drawNodes(data) {
     const node = new SRD.DefaultNodeModel(model.name, 'rgb(0,126,255)');
     const ports = {};
     node.addInPort('id');
+    node.addOutPort('id');
     Object.keys(model.attributes).forEach((attr) => {
       console.log(` - Property:`, attr);
-
-      if (attr === 'createdBy' || attr === 'updatedBy') {
-        return;
-      }
-      const fieldData = model.attributes[attr];
-      const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
-      const relationField = fieldData.inversedBy;
-      //if relation
-      if (relation && nodesMap[relation] && nodesMap[relation].ports[relationField]) {
-        const inPort = node.addInPort(attr);
-        const link = inPort.link(nodesMap[relation].ports[relationField]);
-        links.push(link);
-        //if scalar field
-      } else {
-        ports[attr] = node.addOutPort(attr || 'id');
-      }
+      node.addInPort(attr);
+      node.addOutPort(attr);
     });
     node.setPosition(150 * index, 100);
     nodes.push(node);
     nodesMap[model.key] = { node, ports };
   });
+
+  data.forEach((model, index) => {
+    const node = nodesMap[model.key].node;
+    Object.keys(model.attributes).forEach((attr) => {
+      const fieldData = model.attributes[attr];
+      const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
+      const relationField = fieldData.inversedBy;
+      //if relation
+      if (relation && nodesMap[relation]) {
+        const inPort = node.addInPort(attr);
+        const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
+        links.push(link);
+      }
+    });
+  });
+
   model.addAll(...nodes, ...links);
   engine.setDiagramModel(model);
   return { engine, model };
