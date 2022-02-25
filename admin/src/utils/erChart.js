@@ -83,6 +83,7 @@ export function drawNodes(data) {
       if (relation && nodesMap[relation]) {
         const inPort = node.addInPort(attr);
         const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
+        link.addLabel(fieldData.relation);
         links.push(link);
       }
     });
