@@ -1,5 +1,5 @@
 {
-  "name": "strapi-plugin-entity-relationship-chart",
+  "name": "@odda-studio/strapi-plugin-entity-relationship-chart",
   "version": "4.0.2",
   "description": "Plugin displays Entity Relationship Diagram of all Strapi models, fields and relations.",
   "strapi": {
