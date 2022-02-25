@@ -58,10 +58,13 @@ export function drawNodes(data) {
     links = [];
 
   data.forEach((model, index) => {
+    console.log(`Model name: ${model.name}`);
     const node = new SRD.DefaultNodeModel(model.name, 'rgb(0,126,255)');
     const ports = {};
     node.addInPort('id');
     Object.keys(model.attributes).forEach((attr) => {
+      console.log(` - Property:`, attr);
+
       if (attr === 'createdBy' || attr === 'updatedBy') {
         return;
       }
