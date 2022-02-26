@@ -84,8 +84,9 @@ export function drawNodes(data) {
       const relationField = fieldData.inversedBy;
       if (relation && nodesMap[relation]) {
         const inPort = nodesMap[relation].ports[`${attr}-in`] || nodesMap[relation].ports['id-in'];
-        if (inPort) {
-          const link = inPort.link(nodesMap[relation].ports[`${relationField}-in` || 'id-in']);
+        const connection = nodesMap[relation].ports[`${relationField}-in` || 'id-in'];
+        if (inPort && connection) {
+          const link = inPort.link(connection);
           link.addLabel(fieldData.relation);
           if (link) {
             links.push(link);
