@@ -87,11 +87,13 @@ export function drawNodes(data) {
       const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
       const relationField = fieldData.inversedBy;
       if (relation && nodesMap[relation]) {
-        const inPort = (nodesMap[relation].ports[attr].in || nodesMap[relation].ports['id']).in;
-        const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
-        link.addLabel(fieldData.relation);
-        if (link) {
-          links.push(link);          
+        const inPort = (nodesMap[relation].ports[attr] || nodesMap[relation].ports['id'] || {}).in;
+        if (inPort) {
+          const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
+          link.addLabel(fieldData.relation);
+          if (link) {
+            links.push(link);
+          }
         }
       }
     });
