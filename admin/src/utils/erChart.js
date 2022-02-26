@@ -70,7 +70,7 @@ export function drawNodes(data) {
     Object.keys(model.attributes).forEach((attr) => {
       console.log(` - Property:`, attr);
       ports[`${attr}-in`] = node.addInPort(attr);
-      ports[`${attr}-out`] = node.addOutPort('');
+      ports[`${attr}-out`] = node.addOutPort('-');
     });
     node.setPosition(150 * index, 100);
     nodes.push(node);
