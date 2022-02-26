@@ -60,9 +60,13 @@ export function drawNodes(data) {
   data.forEach((model, index) => {
     console.log(`Model name: ${model.name}`);
     const node = new SRD.DefaultNodeModel(model.name, 'rgb(0,126,255)');
-    const ports = {};
-    node.addInPort('id');
-    node.addOutPort('id');
+    const ports = {
+      'id': {
+        in: node.addInPort('id'),
+        out: node.addOutPort('id')
+      }
+    };
+
     Object.keys(model.attributes).forEach((attr) => {
       console.log(` - Property:`, attr);
       ports[attr] = {
