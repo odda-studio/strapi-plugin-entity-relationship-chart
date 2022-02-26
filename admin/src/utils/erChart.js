@@ -83,7 +83,7 @@ export function drawNodes(data) {
       const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
       const relationField = fieldData.inversedBy;
       if (relation && nodesMap[relation]) {
-        const inPort = nodesMap[relation].ports[`${attr}-in`] || nodesMap[relation].ports['id-in'];
+        const inPort = nodesMap[relation].ports[`${attr}-out`] || nodesMap[relation].ports['id-out'];
         const connection = nodesMap[relation].ports[`${relationField}-in` || 'id-in'];
         if (inPort && connection) {
           const link = inPort.link(connection);
