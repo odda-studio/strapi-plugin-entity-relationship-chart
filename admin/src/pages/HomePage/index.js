@@ -7,7 +7,7 @@ require('../../utils/style.min.css');
 require('./main.css');
 
 async function getERData() {
-  return await request(`/${pluginId}/er-data`);
+  return await request(`/${(pluginId || '').replace('@odda-studio/', '')}/er-data`);
 }
 
 const HomePage = () => {
