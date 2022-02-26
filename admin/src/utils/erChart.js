@@ -86,12 +86,13 @@ export function drawNodes(data) {
       const fieldData = model.attributes[attr];
       const relation = fieldData.type === 'relation' && fieldData?.target?.substring(fieldData.target.lastIndexOf('.') + 1);
       const relationField = fieldData.inversedBy;
-      //if relation
       if (relation && nodesMap[relation]) {
         const inPort = (nodesMap[relation].ports[attr] || nodesMap[relation].ports['id']).in;
         const link = inPort.link(nodesMap[relation].ports[relationField || 'id']);
         link.addLabel(fieldData.relation);
-        links.push(link);
+        if (link) {
+          links.push(link);          
+        }
       }
     });
   });
