@@ -1,6 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import { request } from '@strapi/helper-plugin';
 import pluginId from '../../pluginId';
+import * as SRD from '../../utils/storm-react-diagrams';
+import { drawNodes, autoLayout } from '../../utils/erChart';
 require('../../utils/style.min.css');
 require('./main.css');
 
@@ -9,12 +11,16 @@ async function getERData() {
 }
 
 const HomePage = () => {
+  const [engine, setEngine] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
     async function getData() {
       try {
         const res = await getERData();
+        const { engine, model } = drawNodes(res.data);
+        setEngine(engine);
+        autoLayout(engine, model);
       } catch (e) {
         setError(e);
       }
@@ -38,7 +44,7 @@ const HomePage = () => {
           </textarea>
         </div>
       )}
-      <div id='erd'></div>
+      {engine && <SRD.DiagramWidget diagramEngine={engine} />}
     </div>
   );
 };
